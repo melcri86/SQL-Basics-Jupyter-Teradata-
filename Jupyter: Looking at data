@@ -1,28 +1,18 @@
-SHOW
-
-%sql SHOW tables
+%sql SHOW tables;
 
 %sql SHOW columns FROM dognitiondb.dogs
 %sql SHOW columns FROM dognitiondb.complete_tests
-%sql SHOW columns FROM dognitiondb.site_activities
+%sql SHOW columns FROM dognitiondb.site_activities;
 
-DESCRIBE
-
-%sql DESCRIBE reviews
-
-SELECT FROM
+%sql DESCRIBE reviews;
 
 %%sql
 SELECT breed
 FROM dogs;
 
-SELECT FROM LIMIT
-
 %%sql
 SELECT breed
 FROM dogs LIMIT 10;
-
-SELECT FROM LIMIT OFFSET
 
 %%sql
 SELECT breed
