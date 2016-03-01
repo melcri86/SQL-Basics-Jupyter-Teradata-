@@ -1,0 +1,26 @@
+DATABASE ua_dillards;
+
+HELP TABLE reviews;
+HELP COLUMN created_at;
+
+SHOW reviews;
+
+SELECT TOP 10 *
+FROM strinfo;
+
+SELECT TOP 10 *
+FROM strinfo
+ORDER BY city ASC;
+
+SELECT *
+FROM strinfo
+SAMPLE 10;
+
+SELECT *
+FROM strinfo
+SAMPLE .10;
+
+
+
+
+
