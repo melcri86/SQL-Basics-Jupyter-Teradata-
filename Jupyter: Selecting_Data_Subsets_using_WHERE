@@ -1,6 +1,6 @@
 %load_ext sql
 %sql mysql://studentuser:studentpw@mysqlserver/dognitiondb
-%sql USE dognitiondb
+%sql USE dognitiondb;
 
 %%sql
 SELECT user_guid, free_start_user
