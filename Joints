@@ -1,0 +1,33 @@
+%%sql
+SELECT d.user_guid AS UserID, d.dog_guid AS DogID, d.breed,
+d.breed_type, d.breed_group
+FROM dogs d, complete_tests c
+WHERE d.dog_guid=c.dog_guid AND test_name='Yawn Warm-up';
+
+%%sql
+SELECT DISTINCT d.user_guid AS UserID, u.membership_type, d.dog_guid AS DogID, d.breed
+FROM users u, dogs d, complete_tests c
+WHERE d.dog_guid=c.dog_guid
+AND d.user_guid=u.user_guid
+AND d.breed="Golden Retriever";
+
+%%sql
+SELECT DISTINCT d.dog_guid AS DogID, d.breed, u.state 
+FROM dogs d, users u
+WHERE d.user_guid=u.user_guid
+AND u.state="NC"
+AND d.breed="Golden Retriever";
+
+%%sql
+SELECT u.membership_type AS Membership, COUNT(DISTINCT r.user_guid)
+FROM users u, reviews r
+WHERE u.user_guid=r.user_guid
+GROUP BY membership_type;
+
+%%sql
+SELECT COUNT(s.script_detail_id), d.breed
+FROM site_activities s, dogs d
+WHERE s.dog_guid=d.dog_guid AND s.script_detail_id IS NOT NULL
+GROUP by d.breed
+ORDER BY COUNT(s.script_detail_id) DESC
+LIMIT 3;
