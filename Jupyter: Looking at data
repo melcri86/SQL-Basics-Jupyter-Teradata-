@@ -1,0 +1,61 @@
+SHOW
+
+%sql SHOW tables
+
+%sql SHOW columns FROM dognitiondb.dogs
+%sql SHOW columns FROM dognitiondb.complete_tests
+%sql SHOW columns FROM dognitiondb.site_activities
+
+DESCRIBE
+
+%sql DESCRIBE reviews
+
+SELECT FROM
+
+%%sql
+SELECT breed
+FROM dogs;
+
+SELECT FROM LIMIT
+
+%%sql
+SELECT breed
+FROM dogs LIMIT 10;
+
+SELECT FROM LIMIT OFFSET
+
+%%sql
+SELECT breed
+FROM dogs LIMIT 10 OFFSET 5;
+
+%%sql
+SELECT breed_group, breed_type, breed
+FROM dogs LIMIT 5, 10;
+
+%%sql
+SELECT *
+FROM reviews LIMIT 10, 20;
+
+%%sql
+SELECT *
+FROM dogs LIMIT 5, 10;
+
+SELECT median_iti_minutes / 60
+FROM dogs LIMIT 5, 10;
+
+%%sql
+SELECT dog_guid, subcategory_name, test_name
+FROM reviews LIMIT 15;
+
+%%sql
+SELECT activity_type, created_at, updated_at
+FROM site_activities LIMIT 50, 10;
+
+%%sql
+SELECT *
+FROM users LIMIT 2000, 20;
+
+%%sql
+SELECT *
+FROM complete_tests LIMIT 200, 10;
+
