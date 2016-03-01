@@ -37,9 +37,8 @@ WHERE country="US" AND membership_type IS NOT NULL AND state IS NOT NULL
 ORDER BY membership_type DESC, state ASC
 LIMIT 100;
 
-breed_list = %sql SELECT DISTINCT breed FROM dogs ORDER BY breed;
-
-breed_list.csv("breed_list.csv")
+breed_list = %sql SELECT DISTINCT breed FROM dogs ORDER BY breed
+breed_list.csv("breed_list.csv");
 
 %%sql
 SELECT DISTINCT breed,
@@ -61,7 +60,7 @@ FROM complete_tests
 ORDER By subcategory_name ASC;
 
 non_us_list = %sql SELECT DISTINCT country FROM users WHERE country!="US" ORDER by country ASC
-non_us_list.csv("non_us_list.csv")
+non_us_list.csv("non_us_list.csv");
 
 %%sql
 SELECT user_guid, dog_guid, test_name
@@ -70,7 +69,7 @@ ORDER BY created_at ASC
 LIMIT 10;
 
 year_cust_list = %sql SELECT user_guid FROM users WHERE membership_type=2 AND state="NC" AND created_at < "2014-03-01" ORDER BY created_at ASC;
-year_cust_list.csv("year_cust_list.csv")
+year_cust_list.csv("year_cust_list.csv");
 
 %%sql
 SELECT DISTINCT UCASE(breed)
