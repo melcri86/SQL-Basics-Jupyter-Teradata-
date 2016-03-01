@@ -1,3 +1,7 @@
+%load_ext sql
+%sql mysql://studentuser:studentpw@mysqlserver/dognitiondb
+%sql USE dognitiondb;
+
 %sql SHOW tables;
 
 %sql SHOW columns FROM dognitiondb.dogs
