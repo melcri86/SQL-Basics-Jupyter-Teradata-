@@ -27,30 +27,68 @@ WHERE skstinfo.sku IS NULL;
 
 //4
 
-SELECT DISTINCT(trnsact.saledate), SUM(trnsact.amt) AS SUMTotalPurchace 
+SELECT TOP 10 saledate, SUM(amt) AS tot_sales
 FROM trnsact
+WHERE stype='P'
+GROUP BY saledate
+ORDER BY tot_sales DESC;
+
+SELECT TOP 3 s.dept, d.deptdesc, COUNT(DISTINCT s.sku) AS numskus
+FROM skuinfo s JOIN deptinfo d
+ON s.dept=d.dept
+GROUP BY s.dept, d.deptdesc
+ORDER BY numskus DESC;
+
+SELECT COUNT(DISTINCT si.sku)
+FROM skuinfo si LEFT JOIN skstinfo st
+ON si.sku=st.sku
+WHERE st.sku IS NULL;
+
+SELECT SUM(amt-(cost*quantity))/ COUNT(DISTINCT saledate) AS avg_sales
+FROM trnsact t JOIN skstinfo si
+ON t.sku=si.sku AND t.store=si.store
+WHERE stype='P';
+
+SELECT COUNT(distinct msa), MIN(msa_pop), MAX(msa_income)
+FROM store_msa
+WHERE state='NC'
+
+SELECT COUNT(DISTINCT sku) AS numskus
+FROM skstinfo
+GROUP BY store
+HAVING numskus > 180000;
+
+SELECT DISTINCT s.sku, s.dept, s.style, s.color, s.size, s.vendor, s.brand, s.packsize, d.deptdesc, st.retail, st.cost
+FROM skuinfo s JOIN deptinfo d
+ON s.dept= d.dept JOIN skstinfo st
+ON s.sku=st.sku
+WHERE d.deptdesc='cop' AND s.brand='federal' AND s.color='rinse wash';
+
+SELECT COUNT(*) AS numstores
+FROM strinfo
+GROUP BY state
+HAVING numstores>10;
+
+SELECT AVG(skstinfo.retail) AS AvgRetailPrice
+FROM skstinfo JOIN skuinfo
+ON skstinfo.sku=skuinfo.sku
+JOIN deptinfo
+ON skuinfo.dept=deptinfo.dept
+WHERE deptinfo.deptdesc='reebok' AND skuinfo.brand='skechers' AND skuinfo.color='wht/saphire';
+
+SELECT DISTINCT skuinfo.dept, deptinfo.deptdesc, skuinfo.style, skuinfo.color, skuinfo.brand, SUM(trnsact.amt)
+FROM trnsact JOIN skuinfo
+ON trnsact.sku=skuinfo.sku
+JOIN deptinfo
+ON skuinfo.dept=deptinfo.dept
 WHERE trnsact.stype='P'
-GROUP BY trnsact.saledate
+GROUP BY skuinfo.dept, deptinfo.deptdesc, skuinfo.style, skuinfo.color, skuinfo.brand
 ORDER BY SUM(trnsact.amt) DESC;
 
-SELECT deptinfo.deptdesc, COUNT(deptinfo.deptdesc), COUNT(skuinfo.sku)
-FROM deptinfo JOIN skuinfo
-ON deptinfo.dept=skuinfo.dept
-GROUP BY deptinfo.deptdesc
-ORDER BY COUNT(skuinfo.sku) DESC;
-
-SELECT COUNT(DISTINCT skstinfo.sku)
-FROM skstinfo LEFT JOIN skuinfo
-ON skstinfo.sku=skuinfo.sku
-WHERE skuinfo.sku IS NULL;
-
-SELECT (AVG(trnsact.amt) - AVG(skstinfo.cost))*AVG(trnsact.quantity) AS AvgTotalProfit
-FROM trnsact JOIN skstinfo
-ON trnsact.sku=skstinfo.sku;
-
-SELECT ((AVG(trnsact.amt) - AVG(skstinfo.cost))*AVG(trnsact.quantity))/COUNT(DISTINCT trnsact.saledate) AS AvgProfitDay
-FROM trnsact JOIN skstinfo
-ON trnsact.sku=skstinfo.sku;
-
-
+SELECT DISTINCT store_msa.msa_name, store_msa.city, store_msa.state, SUM(trnsact.amt)
+FROM store_msa JOIN trnsact
+ON store_msa.store=trnsact.store
+WHERE trnsact.stype='R'
+GROUP BY store_msa.msa_name, store_msa.city, store_msa.state
+ORDER BY SUM(trnsact.amt) DESC;
 
