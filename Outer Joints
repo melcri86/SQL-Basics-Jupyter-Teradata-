@@ -1,0 +1,54 @@
+%%sql
+SELECT d.user_guid AS UserID, d.dog_guid AS DogID,
+d.breed, d.breed_type, d.breed_group
+FROM dogs d JOIN complete_tests c
+ON d.dog_guid=c.dog_guid 
+WHERE test_name="yawm warm-up";
+
+%%sql
+SELECT d.dog_guid AS dDogID, c.dog_guid AS cDogID, d.user_guid AS dUserID, 
+c.user_guid AS cUserID, COUNT(test_name)
+FROM dogs d LEFT JOIN complete_tests c
+ON d.dog_guid=c.dog_guid
+GROUP BY d.dog_guid
+ORDER BY COUNT(test_name) DESC
+LIMIT 100;
+
+%%sql
+SELECT d.dog_guid AS dDogID, u.user_guid AS uUserID, d.user_guid AS dUserID, d.breed_group, 
+d.breed_type, d.breed
+FROM users u LEFT JOIN dogs d
+ON u.user_guid=d.user_guid;
+
+%%sql
+SELECT d.dog_guid AS dDogID, u.user_guid AS uUserID, d.user_guid AS dUserID, d.breed_group, 
+d.breed_type, d.breed, COUNT(*) AS NumRows
+FROM users u LEFT JOIN dogs d
+ON u.user_guid=d.user_guid
+GROUP BY u.user_guid
+ORDER BY NumRows DESC;
+
+%%sql
+SELECT user_guid, COUNT(*) AS NumRows
+FROM users
+WHERE user_guid="ce225842-7144-11e5-ba71-058fbc01cf0b";
+
+%%sql
+SELECT COUNT(DISTINCT u.user_guid) AS NumUuserID
+FROM users u LEFT JOIN dogs d
+ON u.user_guid=d.user_guid
+WHERE d.user_guid IS NULL;
+
+%%sql
+SELECT COUNT(DISTINCT u.user_guid) AS NumUuserID
+FROM dogs d RIGHT JOIN users u
+ON d.user_guid=u.user_guid
+WHERE d.user_guid IS NULL;
+
+%%sql
+SELECT s.dog_guid AS SA_dogs_not_present_in_dogs_table, COUNT(*) AS
+NumEntries
+FROM site_activities s LEFT JOIN dogs d
+ON s.dog_guid=d.dog_guid
+WHERE d.dog_guid IS NULL AND s.dog_guid IS NOT NULL
+GROUP BY SA_dogs_not_present_in_dogs_table;
