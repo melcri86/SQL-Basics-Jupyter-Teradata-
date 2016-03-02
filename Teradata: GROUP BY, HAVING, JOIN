@@ -1,0 +1,56 @@
+SELECT sku, COUNT(sku), AVG(retail), AVG(cost)
+FROM skstinfo
+GROUP BY sku;
+
+//1a
+
+SELECT COUNT(DISTINCT skuinfo.sku), COUNT(DISTINCT skstinfo.sku), COUNT(DISTINCT trnsact.sku)
+FROM skuinfo, skstinfo, trnsact;
+
+//1b
+
+SELECT COUNT(trnsact.sku)
+FROM trnsact JOIN skstinfo
+ON trnsact.sku= skstinfo.sku AND trnsact.store= skstinfo.store;
+
+//2
+
+SELECT COUNT(DISTINCT strinfo.store), COUNT(DISTINCT skstinfo.store), COUNT(DISTINCT store_msa.store), COUNT(DISTINCT trnsact.store)
+FROM strinfo, skstinfo, store_msa, trnsact;
+
+//3
+
+SELECT *
+FROM trnsact LEFT JOIN skstinfo
+ON trnsact.sku=skstinfo.sku
+WHERE skstinfo.sku IS NULL;
+
+//4
+
+SELECT DISTINCT(trnsact.saledate), SUM(trnsact.amt) AS SUMTotalPurchace 
+FROM trnsact
+WHERE trnsact.stype='P'
+GROUP BY trnsact.saledate
+ORDER BY SUM(trnsact.amt) DESC;
+
+SELECT deptinfo.deptdesc, COUNT(deptinfo.deptdesc), COUNT(skuinfo.sku)
+FROM deptinfo JOIN skuinfo
+ON deptinfo.dept=skuinfo.dept
+GROUP BY deptinfo.deptdesc
+ORDER BY COUNT(skuinfo.sku) DESC;
+
+SELECT COUNT(DISTINCT skstinfo.sku)
+FROM skstinfo LEFT JOIN skuinfo
+ON skstinfo.sku=skuinfo.sku
+WHERE skuinfo.sku IS NULL;
+
+SELECT (AVG(trnsact.amt) - AVG(skstinfo.cost))*AVG(trnsact.quantity) AS AvgTotalProfit
+FROM trnsact JOIN skstinfo
+ON trnsact.sku=skstinfo.sku;
+
+SELECT ((AVG(trnsact.amt) - AVG(skstinfo.cost))*AVG(trnsact.quantity))/COUNT(DISTINCT trnsact.saledate) AS AvgProfitDay
+FROM trnsact JOIN skstinfo
+ON trnsact.sku=skstinfo.sku;
+
+
+
